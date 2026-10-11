@@ -1,0 +1,189 @@
+---
+import Base from '../layouts/Base.astro';
+import { PROJECTS, REEL_ID, YT_CHANNEL, EDITS, EMAIL, LINKEDIN, INSTAGRAM } from '../data/projects';
+
+const ytEmbed = (id: string, params: string) =>
+  `https://www.youtube-nocookie.com/embed/${id}?${params}`;
+
+const reelSrc = ytEmbed(REEL_ID, 'autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1');
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base title="Gabriel Sonnenberg — VFX Generalist / Compositor">
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<!-- Header -->
+<header style="position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px var(--px);background:rgba(11,11,12,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)">
+  <a href="#top" style="font-weight:600;font-size:14px;letter-spacing:.02em">GABRIEL SONNENBERG</a>
+  <nav style="display:flex;gap:clamp(14px,3vw,28px);font-size:13px;color:var(--muted)">
+    <a href="#work" style="color:inherit">Work</a>
+    <a href="#editing" style="color:inherit">Editing</a>
+    <a href="#about" style="color:inherit">About</a>
+    <a href="#contact" style="color:inherit">Contact</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section id="top" style="padding:clamp(28px,5vw,64px) var(--px) clamp(32px,5vw,56px);display:grid;gap:clamp(20px,3vw,36px)">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px">
+    <div>
+      <h1 style="font-size:clamp(34px,6vw,76px);font-weight:500;line-height:.98;letter-spacing:-.02em">Gabriel Sonnenberg</h1>
+      <p style="margin-top:12px;font-size:clamp(15px,1.6vw,20px);color:var(--muted)">VFX Generalist <span style="color:var(--accent)">/</span> Compositor</p>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--dim);display:grid;gap:4px;text-align:right">
+      <span>DEMO REEL &middot; 2026</span>
+    </div>
+  </div>
+  <div class="video-wrap">
+    <iframe
+      referrerpolicy="strict-origin-when-cross-origin"
+      title="Demo reel"
+      src={reelSrc}
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--font-mono);font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em">
+    <span>Red Deer Polytechnic &middot; BAA Animation &amp; VFX &middot; 2026</span>
+    <span>Nuke &middot; Maya &middot; Unreal &middot; Premiere &middot; Photoshop</span>
+    <span>Open to junior comp / generalist roles</span>
+  </div>
+</section>
+
+<!-- Selected works -->
+<section id="work" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
+  <div class="section-head">
+    <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Selected works</h2>
+    <span class="mono">04 SHOTS &middot; PLAY INLINE &middot; TITLE FOR BREAKDOWN</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(12px,2vw,20px)">
+    {PROJECTS.map((p, i) => {
+      const frame = `F${pad(1001 + Number(p.num) * 97)}`;
+      const isLead = p.slug === 'delorean';
+      return (
+        <div style={`display:block;color:inherit;${isLead ? 'grid-column:1/-1' : ''}`} data-card data-video-id={p.video}>
+          <div class="video-wrap" style="background:var(--surface)">
+            <div class="thumb-placeholder"></div>
+            <div class="thumb-label">THUMBNAIL</div>
+            <div style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);z-index:1">{p.num}</div>
+            <div style="position:absolute;bottom:10px;right:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);z-index:1">{frame}</div>
+          </div>
+          <a href={`/work/${p.slug}/`} style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 2px 0;color:inherit">
+            <div>
+              <div style="font-size:17px;font-weight:500">{p.title} <span style="color:var(--accent)">&rarr;</span></div>
+              <div style="font-size:13px;color:var(--muted);margin-top:2px">{p.sub} &middot; breakdown</div>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--dim);white-space:nowrap">{p.year}</span>
+          </a>
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+<!-- Video editing -->
+<section id="editing" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
+  <div class="section-head">
+    <div>
+      <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Video editing</h2>
+      <p style="margin-top:6px;font-size:14px;color:var(--muted);max-width:60ch">Edits and thumbnails for my YouTube channel, ChiliDog. Cut in Premiere Pro, thumbnails in Photoshop.</p>
+    </div>
+    <a href={YT_CHANNEL} target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">YOUTUBE CHANNEL &#8599;</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,20px)">
+    {EDITS.map((e, i) => (
+      <div>
+        <div class="video-wrap" style="background:var(--surface)">
+          <iframe
+            referrerpolicy="strict-origin-when-cross-origin"
+            title={e.title}
+            src={ytEmbed(e.video, 'rel=0&modestbranding=1&playsinline=1')}
+            allow="fullscreen; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+          <div style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);pointer-events:none;z-index:1">E{pad(i + 1)}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" style="padding:clamp(32px,5vw,72px) var(--px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
+  <div>
+    <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">About</h2>
+    <span class="mono">RED DEER, ALBERTA</span>
+  </div>
+  <div style="font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:var(--text-2);max-width:62ch;display:grid;gap:18px">
+    <p>I'm a VFX generalist focused on compositing: integrating CG into live-action footage until the seams disappear. My day-to-day is Nuke and Maya, covering camera tracking, matchmoving, rotoscoping, green screen keying, matte painting and colour correction.</p>
+    <p>I graduated with honours from Red Deer Polytechnic's Bachelor of Applied Arts in Animation and Visual Effects in April 2026, on the Dean's List every term. At RDP I worked in a 15-person team on the Sports Animation Project, a simulated studio pipeline, and animated shorts for the RDP sports committee.</p>
+    <p>Outside school I've done 3D modelling, rendering and graphic design for the U of A Engineers in Action club, logo and 3D promo work for a Twitch streamer, and I edit and design thumbnails for my own YouTube channel, ChiliDog.</p>
+    <p>Before VFX I spent five years supervising lifeguard teams for the City of Red Deer, Town of Blackfalds and City of Edmonton, which is where I learned to stay calm, run a team and hold a standard under pressure.</p>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" style="padding:clamp(32px,5vw,72px) var(--px) clamp(40px,6vw,80px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
+  <div>
+    <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Contact</h2>
+    <span class="mono">STUDIO ROLES &middot; FREELANCE</span>
+  </div>
+  <div style="display:grid;font-size:clamp(16px,1.5vw,19px)">
+    <a href={`mailto:${EMAIL}`} class="contact-row">
+      <span>Email</span><span style="color:var(--muted)">{EMAIL}</span>
+    </a>
+    <a href={INSTAGRAM} target="_blank" rel="noopener" class="contact-row">
+      <span>Instagram</span><span style="color:var(--muted)">@chilidog_studios</span>
+    </a>
+    <a href={LINKEDIN} target="_blank" rel="noopener" class="contact-row">
+      <span>LinkedIn</span><span style="color:var(--muted)">gabriel-sonnenberg</span>
+    </a>
+    <a href="/Gabriel_Sonnenberg_Resume.pdf" download="Gabriel_Sonnenberg_Resume.pdf" class="contact-row" style="border-bottom:1px solid var(--line)">
+      <span>Resume</span><span style="color:var(--accent)">PDF &#8595;</span>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="margin-top:auto;padding:20px var(--px);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--faint)">
+  <span>&copy; 2026 GABRIEL SONNENBERG</span>
+</footer>
+
+</div>
+
+</Base>
+
+<style>
+  .contact-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    color: inherit;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-card]').forEach(card => {
+    const wrap = card.querySelector('.video-wrap') as HTMLElement;
+    const id = card.dataset.videoId;
+    if (!id) return;
+    let iframe: HTMLIFrameElement | null = null;
+
+    card.addEventListener('mouseenter', () => {
+      if (iframe) return;
+      iframe = document.createElement('iframe');
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allow = 'autoplay';
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&rel=0&modestbranding=1&playsinline=1&controls=0`;
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1';
+      wrap.appendChild(iframe);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (iframe) { iframe.remove(); iframe = null; }
+    });
+  });
+</script>

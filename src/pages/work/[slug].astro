@@ -1,0 +1,137 @@
+---
+import Base from '../../layouts/Base.astro';
+import { PROJECTS } from '../../data/projects';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  PROJECTS.map(p => ({ params: { slug: p.slug }, props: { project: p } }));
+
+const { project: p } = Astro.props;
+const idx = PROJECTS.findIndex(x => x.slug === p.slug);
+const prev = PROJECTS[(idx - 1 + PROJECTS.length) % PROJECTS.length];
+const next = PROJECTS[(idx + 1) % PROJECTS.length];
+
+const ytEmbed = (id: string, params: string) =>
+  `https://www.youtube-nocookie.com/embed/${id}?${params}`;
+
+const videoSrc = ytEmbed(p.video, 'autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1');
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base title={`${p.title} — Gabriel Sonnenberg`} description={p.summary}>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<!-- Header -->
+<header style="position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px var(--px);background:rgba(11,11,12,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)">
+  <a href="/" style="font-weight:600;font-size:14px;letter-spacing:.02em">GABRIEL SONNENBERG</a>
+  <a href="/#work" style="font-size:13px;color:var(--muted)">&larr; All shots</a>
+</header>
+
+<!-- Top -->
+<section style="padding:clamp(28px,5vw,64px) var(--px) clamp(24px,4vw,40px);display:grid;gap:clamp(18px,3vw,28px)">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px">
+    <div>
+      <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent)">SHOT {p.num}</span>
+      <h1 style="margin-top:6px;font-size:clamp(32px,5vw,64px);font-weight:500;line-height:1;letter-spacing:-.02em">{p.title}</h1>
+      <p style="margin-top:10px;font-size:clamp(15px,1.5vw,19px);color:var(--muted)">{p.sub}</p>
+    </div>
+    <span style="font-family:var(--font-mono);font-size:12px;color:var(--dim)">{p.year} &middot; FINAL COMP</span>
+  </div>
+  <div class="video-wrap">
+    <iframe
+      referrerpolicy="strict-origin-when-cross-origin"
+      title={`${p.title} final shot`}
+      src={videoSrc}
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <p style="max-width:62ch;font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:var(--text-2)">{p.summary}</p>
+</section>
+
+<!-- Plate vs. final -->
+<section style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(14px,2vw,20px)">
+  <div class="section-head">
+    <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Plate vs. final</h2>
+    <span class="mono">DRAG TO COMPARE &middot; <span id="split-label">050%</span></span>
+  </div>
+  <div id="compare" style="position:relative;aspect-ratio:16/9;border:1px solid var(--line);overflow:hidden;background:var(--surface);user-select:none">
+    <!-- Final (underneath) -->
+    <div style="position:absolute;inset:0;display:grid;place-items:center;background:var(--surface-3);color:var(--faint);font-family:var(--font-mono);font-size:12px;letter-spacing:.08em">FINAL COMP STILL</div>
+    <!-- Plate (clipped) -->
+    <div id="plate-clip" style="position:absolute;inset:0;clip-path:inset(0 50% 0 0)">
+      <div style="position:absolute;inset:0;display:grid;place-items:center;background:var(--surface-2);color:var(--faint);font-family:var(--font-mono);font-size:12px;letter-spacing:.08em">RAW PLATE</div>
+    </div>
+    <!-- Handle -->
+    <div id="compare-handle" style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--text);z-index:1">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border:1px solid var(--text);background:var(--bg);display:grid;place-items:center;font-size:11px;color:var(--text);font-family:var(--font-mono)">&#9666;&#9656;</div>
+    </div>
+    <!-- Corner tags -->
+    <span style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--text);background:rgba(11,11,12,.7);padding:3px 6px;z-index:1">PLATE</span>
+    <span style="position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:11px;color:var(--text);background:rgba(11,11,12,.7);padding:3px 6px;z-index:1">FINAL</span>
+    <!-- Range input -->
+    <input type="range" id="split-range" min="0" max="100" value="50" aria-label="Compare plate and final" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.0001;z-index:2" />
+  </div>
+</section>
+
+<!-- Breakdown -->
+<section style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
+  <div>
+    <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Breakdown</h2>
+    <span class="mono">{pad(p.steps.length)} NODES &middot; PLATE &rarr; FINAL</span>
+  </div>
+  <ol style="list-style:none;margin:0;padding:0;display:grid;max-width:62ch">
+    {p.steps.map(([name, text], k) => (
+      <li style="display:grid;grid-template-columns:28px 1fr;gap:16px;position:relative">
+        <div style="display:grid;justify-items:center;grid-template-rows:auto 1fr">
+          <div style="width:12px;height:12px;border:1px solid var(--accent);background:var(--bg);margin-top:5px;position:relative;z-index:1"></div>
+          <div style={`width:1px;background:var(--line-2);margin-top:-1px;${k === p.steps.length - 1 ? 'opacity:0' : ''}`}></div>
+        </div>
+        <div style="padding-bottom:22px">
+          <div style="display:flex;gap:10px;align-items:baseline">
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--dim)">{pad(k + 1)}</span>
+            <span style="font-size:17px;font-weight:500">{name}</span>
+          </div>
+          <p style="margin-top:4px;font-size:15px;line-height:1.5;color:var(--muted)">{text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<!-- Software -->
+<section style="padding:clamp(24px,4vw,56px) var(--px) clamp(40px,6vw,80px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
+  <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Software</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    {p.software.map(sw => (
+      <span style="font-family:var(--font-mono);font-size:12px;padding:8px 12px;border:1px solid var(--line-2);color:var(--text-2)">{sw}</span>
+    ))}
+  </div>
+</section>
+
+<!-- Footer nav -->
+<footer style="margin-top:auto;padding:20px var(--px);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:11px;color:var(--dim)">
+  <a href={`/work/${prev.slug}/`} style="color:inherit">&larr; {prev.title}</a>
+  <a href="/#work" style="color:inherit">ALL SHOTS</a>
+  <a href={`/work/${next.slug}/`} style="color:inherit">{next.title} &rarr;</a>
+</footer>
+
+</div>
+
+</Base>
+
+<script>
+  const range = document.getElementById('split-range') as HTMLInputElement;
+  const plate = document.getElementById('plate-clip') as HTMLElement;
+  const handle = document.getElementById('compare-handle') as HTMLElement;
+  const label = document.getElementById('split-label') as HTMLElement;
+
+  function update() {
+    const v = Number(range.value);
+    plate.style.clipPath = `inset(0 ${100 - v}% 0 0)`;
+    handle.style.left = `${v}%`;
+    label.textContent = `${String(v).padStart(3, '0')}%`;
+  }
+
+  range.addEventListener('input', update);
+</script>
