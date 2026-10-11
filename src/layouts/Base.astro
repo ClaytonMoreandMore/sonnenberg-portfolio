@@ -1,5 +1,5 @@
 ---
-import { REEL_ID } from '../data/projects';
+import { REEL_ID, EMAIL, LINKEDIN, INSTAGRAM, YT_CHANNEL } from '../data/projects';
 
 interface Props {
   title: string;
@@ -11,6 +11,20 @@ const {
   description = 'VFX Generalist / Compositor — Demo reel, breakdowns and contact.',
   ogImage = `https://img.youtube.com/vi/${REEL_ID}/maxresdefault.jpg`,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Gabriel Sonnenberg',
+  jobTitle: 'VFX Generalist / Compositor',
+  url: 'https://gabrielsonnenberg.ca',
+  email: EMAIL,
+  sameAs: [LINKEDIN, INSTAGRAM, YT_CHANNEL],
+};
+
+const fontsUrl = 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +33,7 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
@@ -27,15 +42,41 @@ const {
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'><rect fill='%23FF6B35' width='1' height='1'/></svg>" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" as="style" href={fontsUrl} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={fontsUrl} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </head>
 <body>
-  <slot />
+  <a href="#main" class="skip-link">Skip to content</a>
+  <main id="main">
+    <slot />
+  </main>
 </body>
 </html>
 
 <style is:global>
   @import '../styles/global.css';
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    z-index: 100;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .skip-link:focus {
+    left: 16px;
+  }
 </style>
+
+<script>
+  import { inject } from '@vercel/analytics';
+  inject();
+</script>

@@ -5,7 +5,7 @@ import { PROJECTS, REEL_ID, YT_CHANNEL, EDITS, EMAIL, LINKEDIN, INSTAGRAM } from
 const ytEmbed = (id: string, params: string) =>
   `https://www.youtube-nocookie.com/embed/${id}?${params}`;
 
-const reelSrc = ytEmbed(REEL_ID, 'autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1');
+const reelPlaySrc = ytEmbed(REEL_ID, 'autoplay=1&rel=0&modestbranding=1&playsinline=1');
 
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
@@ -35,14 +35,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <span>DEMO REEL &middot; 2026</span>
     </div>
   </div>
-  <div class="video-wrap">
-    <iframe
-      referrerpolicy="strict-origin-when-cross-origin"
-      title="Demo reel"
-      src={reelSrc}
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen
-    ></iframe>
+  <div class="facade" data-facade data-video-src={reelPlaySrc} style="aspect-ratio:16/9">
+    <img src={`https://img.youtube.com/vi/${REEL_ID}/maxresdefault.jpg`} alt="Demo reel thumbnail" />
+    <div class="play-btn"><svg viewBox="0 0 48 48"><path d="M16 10v28l22-14z"/></svg></div>
   </div>
   <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--font-mono);font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em">
     <span>Red Deer Polytechnic &middot; BAA Animation &amp; VFX &middot; 2026</span>
