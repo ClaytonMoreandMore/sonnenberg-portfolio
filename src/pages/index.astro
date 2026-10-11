@@ -49,25 +49,24 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <!-- Selected works -->
 <section id="work" class="fade-section" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
   <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Selected works</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(12px,2vw,20px)">
+  <div class="works-grid">
     {PROJECTS.map((p, i) => {
       const frame = `F${pad(1001 + Number(p.num) * 97)}`;
-      const isLead = p.slug === 'delorean';
       return (
-        <a href={`/work/${p.slug}/`} class="project-card" style={isLead ? 'grid-column:1/-1' : ''}>
-          <div class="project-thumb">
+        <div class="project-card" data-slug={p.slug}>
+          <div class="project-thumb" data-expand>
             <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} />
             <div class="card-label" style="position:absolute;top:10px;left:12px">{p.num}</div>
             <div class="card-label" style="position:absolute;bottom:10px;right:12px">{frame}</div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 2px 0">
             <div>
-              <div style="font-size:17px;font-weight:500">{p.title} <span style="color:var(--accent)">&rarr;</span></div>
+              <a href={`/work/${p.slug}/`} style="font-size:17px;font-weight:500;color:inherit">{p.title} <span style="color:var(--accent)">&rarr;</span></a>
               <div style="font-size:13px;color:var(--muted);margin-top:2px">{p.sub}</div>
             </div>
             <span style="font-family:var(--font-mono);font-size:11px;color:var(--dim);white-space:nowrap">{p.year}</span>
           </div>
-        </a>
+        </div>
       );
     })}
   </div>
@@ -101,8 +100,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <!-- About -->
 <section id="about" class="fade-section" style="padding:clamp(32px,5vw,72px) var(--px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
   <div>
-    <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">About</h2>
-    <span class="mono">RED DEER, ALBERTA</span>
+    <h2 style="margin-bottom:clamp(16px,2vw,24px);font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">About</h2>
     <img src="/headshot.jpg" alt="Gabriel Sonnenberg" class="headshot" />
   </div>
   <div style="font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:var(--text-2);max-width:62ch;display:grid;gap:18px">
@@ -145,9 +143,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </Base>
 
 <style>
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(12px, 2vw, 20px);
+  }
+
   .project-card {
     display: block;
     color: inherit;
+    transition: grid-column .3s ease;
+  }
+  .project-card.expanded {
+    grid-column: 1 / -1;
   }
   .project-thumb {
     position: relative;
@@ -155,6 +163,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     background: var(--surface);
     border: 1px solid var(--line);
     overflow: hidden;
+    cursor: pointer;
   }
   .project-thumb img {
     position: absolute;
@@ -167,11 +176,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .project-card:hover .project-thumb img {
     transform: scale(1.04);
   }
+  .project-card.expanded .project-thumb {
+    border-color: var(--accent);
+  }
 
   .headshot {
     margin-top: clamp(20px, 3vw, 32px);
     width: 100%;
-    max-width: 320px;
     border: 1px solid var(--line);
     object-fit: cover;
   }
@@ -202,6 +213,23 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </style>
 
 <script>
+  // Expand/collapse project cards
+  document.querySelectorAll<HTMLElement>('[data-expand]').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const card = thumb.closest('.project-card') as HTMLElement;
+      const wasExpanded = card.classList.contains('expanded');
+
+      // Collapse all
+      document.querySelectorAll('.project-card.expanded').forEach(c => c.classList.remove('expanded'));
+
+      // Toggle clicked card
+      if (!wasExpanded) {
+        card.classList.add('expanded');
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+
   // Click-to-play facades (editing section + hero reel)
   document.querySelectorAll<HTMLElement>('[data-facade]').forEach(el => {
     el.addEventListener('click', () => {
