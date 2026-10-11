@@ -52,7 +52,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </section>
 
 <!-- Selected works -->
-<section id="work" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
+<section id="work" class="fade-section" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
   <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Selected works</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(12px,2vw,20px)">
     {PROJECTS.map((p, i) => {
@@ -62,8 +62,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div style={`display:block;color:inherit;${isLead ? 'grid-column:1/-1' : ''}`} data-card data-video-id={p.video}>
           <div class="video-wrap" style="background:var(--surface)">
             <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.6)">{p.num}</div>
-            <div style="position:absolute;bottom:10px;right:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.6)">{frame}</div>
+            <div class="card-label" style="position:absolute;top:10px;left:12px">{p.num}</div>
+            <div class="card-label" style="position:absolute;bottom:10px;right:12px">{frame}</div>
           </div>
           <a href={`/work/${p.slug}/`} style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 2px 0;color:inherit">
             <div>
@@ -79,7 +79,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </section>
 
 <!-- Video editing -->
-<section id="editing" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
+<section id="editing" class="fade-section" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
   <div class="section-head">
     <div>
       <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Video editing</h2>
@@ -90,15 +90,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,20px)">
     {EDITS.map((e, i) => (
       <div>
-        <div class="video-wrap" style="background:var(--surface)">
-          <iframe
-            referrerpolicy="strict-origin-when-cross-origin"
-            title={e.title}
-            src={ytEmbed(e.video, 'rel=0&modestbranding=1&playsinline=1')}
-            allow="fullscreen; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-          <div style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);pointer-events:none;z-index:1">E{pad(i + 1)}</div>
+        <div class="facade" data-facade data-video-src={ytEmbed(e.video, 'rel=0&modestbranding=1&playsinline=1&autoplay=1')}>
+          <img src={`https://img.youtube.com/vi/${e.video}/maxresdefault.jpg`} alt={e.title} loading="lazy" />
+          <div class="play-btn"><svg viewBox="0 0 48 48"><path d="M16 10v28l22-14z"/></svg></div>
+          <div class="card-label" style="position:absolute;top:10px;left:12px;pointer-events:none">E{pad(i + 1)}</div>
+        </div>
+        <div style="padding:10px 2px 0">
+          <div style="font-size:15px;font-weight:500">{e.title}</div>
         </div>
       </div>
     ))}
@@ -106,7 +104,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </section>
 
 <!-- About -->
-<section id="about" style="padding:clamp(32px,5vw,72px) var(--px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
+<section id="about" class="fade-section" style="padding:clamp(32px,5vw,72px) var(--px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
   <div>
     <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">About</h2>
     <span class="mono">RED DEER, ALBERTA</span>
@@ -120,7 +118,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </section>
 
 <!-- Contact -->
-<section id="contact" style="padding:clamp(32px,5vw,72px) var(--px) clamp(40px,6vw,80px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
+<section id="contact" class="fade-section" style="padding:clamp(32px,5vw,72px) var(--px) clamp(40px,6vw,80px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(20px,4vw,48px);align-items:start">
   <div>
     <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Contact</h2>
     <span class="mono">STUDIO ROLES &middot; FREELANCE</span>
@@ -162,6 +160,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </style>
 
 <script>
+  // Hover-to-play on project cards
   document.querySelectorAll<HTMLElement>('[data-card]').forEach(card => {
     const wrap = card.querySelector('.video-wrap') as HTMLElement;
     const id = card.dataset.videoId;
@@ -182,4 +181,27 @@ const pad = (n: number) => String(n).padStart(2, '0');
       if (iframe) { iframe.remove(); iframe = null; }
     });
   });
+
+  // Click-to-play facades (editing section)
+  document.querySelectorAll<HTMLElement>('[data-facade]').forEach(el => {
+    el.addEventListener('click', () => {
+      const src = el.dataset.videoSrc;
+      if (!src) return;
+      const iframe = document.createElement('iframe');
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.src = src;
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2';
+      el.innerHTML = '';
+      el.style.cursor = 'default';
+      el.appendChild(iframe);
+    }, { once: true });
+  });
+
+  // Scroll fade-in
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-section').forEach(s => io.observe(s));
 </script>

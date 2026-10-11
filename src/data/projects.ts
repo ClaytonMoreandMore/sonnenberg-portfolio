@@ -73,9 +73,9 @@ export const REEL_ID = 'mlVbGVEO6SA';
 export const YT_CHANNEL = 'https://www.youtube.com/@CH1L1D0GS/videos';
 
 export const EDITS = [
-  { title: 'Video title', video: 'OTnCfQNOCTc' },
-  { title: 'Video title', video: '8XJle5-KSyg' },
-  { title: 'Video title', video: 'Lq_3cE3w4CE' },
+  { title: 'Siren Head Stranded (Full Playthrough)', video: 'OTnCfQNOCTc' },
+  { title: 'The Cursed Meal | Longplay', video: '8XJle5-KSyg' },
+  { title: 'Sewer Call', video: 'Lq_3cE3w4CE' },
 ];
 
 export const EMAIL = 'gabriel.sonnenberg007@gmail.com';

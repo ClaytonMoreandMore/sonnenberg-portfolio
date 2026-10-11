@@ -1,9 +1,16 @@
 ---
+import { REEL_ID } from '../data/projects';
+
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
-const { title, description = 'VFX Generalist / Compositor — Demo reel, breakdowns and contact.' } = Astro.props;
+const {
+  title,
+  description = 'VFX Generalist / Compositor — Demo reel, breakdowns and contact.',
+  ogImage = `https://img.youtube.com/vi/${REEL_ID}/maxresdefault.jpg`,
+} = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +22,11 @@ const { title, description = 'VFX Generalist / Compositor — Demo reel, breakdo
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'><rect fill='%23FF6B35' width='1' height='1'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
