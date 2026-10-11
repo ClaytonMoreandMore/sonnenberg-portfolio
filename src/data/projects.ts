@@ -13,7 +13,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: 'delorean', num: '01', title: 'DeLorean',
-    sub: 'CG car in a real back alley', year: '2026', video: 'gUr7wS3ZM0E',
+    sub: 'CG car integrated into live action footage', year: '2026', video: 'gUr7wS3ZM0E',
     summary: 'A CG DeLorean drives through my actual back alley, passing behind the fence posts and trash bins that are really there.',
     steps: [
       ['Plate', 'Shot the alley on a locked-off camera, late afternoon.'],
@@ -27,7 +27,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'ufo', num: '02', title: 'UFO',
-    sub: 'CG element over live action', year: '2025', video: 'OEESXj5XVG0',
+    sub: 'CG elements altered to fit the live action environment', year: '2025', video: 'OEESXj5XVG0',
     summary: 'A CG element integrated into live-action footage, using the same pipeline as the DeLorean shot.',
     steps: [
       ['Plate', 'Live-action footage, locked off.'],
@@ -40,7 +40,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'pokeball', num: '03', title: 'Pok\u00e9ball',
-    sub: 'CG ball shot, one week', year: '2026', video: 'lSvTkJ_39bg',
+    sub: 'A test of nailing real physics within an animation', year: '2026', video: 'lSvTkJ_39bg',
     summary: 'A CG ball shot finished in about a week, right before deadlines. The hardest part was painting my dog Lynk out of the plate.',
     steps: [
       ['Plate', 'Shot the plate. Lynk wandered in.'],
@@ -53,7 +53,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'spider-man', num: '04', title: 'Spider-Man',
-    sub: 'Self into a fully 3D city', year: '2026', video: '_R56Bh_6NmQ',
+    sub: 'Mixing live action footage with CG elements', year: '2026', video: '_R56Bh_6NmQ',
     summary: 'I integrated myself into a fully 3D modelled city and meshed myself with a digi double.',
     steps: [
       ['Green screen', 'Shot myself on green screen and keyed the footage in Nuke.'],

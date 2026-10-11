@@ -54,20 +54,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
       const frame = `F${pad(1001 + Number(p.num) * 97)}`;
       const isLead = p.slug === 'delorean';
       return (
-        <div style={`display:block;color:inherit;${isLead ? 'grid-column:1/-1' : ''}`} data-card data-video-id={p.video}>
-          <div class="video-wrap" style="background:var(--surface)">
-            <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+        <a href={`/work/${p.slug}/`} class="project-card" style={isLead ? 'grid-column:1/-1' : ''}>
+          <div class="project-thumb">
+            <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} />
             <div class="card-label" style="position:absolute;top:10px;left:12px">{p.num}</div>
             <div class="card-label" style="position:absolute;bottom:10px;right:12px">{frame}</div>
           </div>
-          <a href={`/work/${p.slug}/`} style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 2px 0;color:inherit">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 2px 0">
             <div>
               <div style="font-size:17px;font-weight:500">{p.title} <span style="color:var(--accent)">&rarr;</span></div>
-              <div style="font-size:13px;color:var(--muted);margin-top:2px">{p.sub} &middot; breakdown</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:2px">{p.sub}</div>
             </div>
             <span style="font-family:var(--font-mono);font-size:11px;color:var(--dim);white-space:nowrap">{p.year}</span>
-          </a>
-        </div>
+          </div>
+        </a>
       );
     })}
   </div>
@@ -103,6 +103,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <div>
     <h2 style="margin-bottom:6px;font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">About</h2>
     <span class="mono">RED DEER, ALBERTA</span>
+    <img src="/headshot.jpg" alt="Gabriel Sonnenberg" class="headshot" />
   </div>
   <div style="font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:var(--text-2);max-width:62ch;display:grid;gap:18px">
     <p>I'm a VFX generalist focused on compositing: integrating CG into live-action footage until the seams disappear. My day-to-day is Nuke and Maya, covering camera tracking, matchmoving, rotoscoping, green screen keying, matte painting and colour correction.</p>
@@ -120,16 +121,16 @@ const pad = (n: number) => String(n).padStart(2, '0');
   </div>
   <div style="display:grid;font-size:clamp(16px,1.5vw,19px)">
     <a href={`mailto:${EMAIL}`} class="contact-row">
-      <span>Email</span><span style="color:var(--muted)">{EMAIL}</span>
+      <span class="contact-label"><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 8 10-8"/></svg>Email</span><span style="color:var(--muted)">{EMAIL}</span>
     </a>
     <a href={INSTAGRAM} target="_blank" rel="noopener" class="contact-row">
-      <span>Instagram</span><span style="color:var(--muted)">@chilidog_studios</span>
+      <span class="contact-label"><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</span><span style="color:var(--muted)">@chilidog_studios</span>
     </a>
     <a href={LINKEDIN} target="_blank" rel="noopener" class="contact-row">
-      <span>LinkedIn</span><span style="color:var(--muted)">gabriel-sonnenberg</span>
+      <span class="contact-label"><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 11v6M7 7v.01M11 11v6m0-3a3 3 0 0 1 6 0v3"/></svg>LinkedIn</span><span style="color:var(--muted)">gabriel-sonnenberg</span>
     </a>
     <a href="/Gabriel_Sonnenberg_Resume.pdf" download="Gabriel_Sonnenberg_Resume.pdf" class="contact-row" style="border-bottom:1px solid var(--line)">
-      <span>Resume</span><span style="color:var(--accent)">PDF &#8595;</span>
+      <span class="contact-label"><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>Resume</span><span style="color:var(--accent)">PDF &#8595;</span>
     </a>
   </div>
 </section>
@@ -144,40 +145,64 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </Base>
 
 <style>
+  .project-card {
+    display: block;
+    color: inherit;
+  }
+  .project-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .project-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s ease;
+  }
+  .project-card:hover .project-thumb img {
+    transform: scale(1.04);
+  }
+
+  .headshot {
+    margin-top: clamp(20px, 3vw, 32px);
+    width: 100%;
+    max-width: 320px;
+    border: 1px solid var(--line);
+    object-fit: cover;
+  }
+
   .contact-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 12px;
     padding: 14px 0;
     border-top: 1px solid var(--line);
     color: inherit;
   }
+  .contact-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .contact-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .contact-row:hover .contact-icon {
+    color: var(--accent);
+  }
 </style>
 
 <script>
-  // Hover-to-play on project cards
-  document.querySelectorAll<HTMLElement>('[data-card]').forEach(card => {
-    const wrap = card.querySelector('.video-wrap') as HTMLElement;
-    const id = card.dataset.videoId;
-    if (!id) return;
-    let iframe: HTMLIFrameElement | null = null;
-
-    card.addEventListener('mouseenter', () => {
-      if (iframe) return;
-      iframe = document.createElement('iframe');
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.allow = 'autoplay';
-      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&rel=0&modestbranding=1&playsinline=1&controls=0`;
-      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1';
-      wrap.appendChild(iframe);
-    });
-
-    card.addEventListener('mouseleave', () => {
-      if (iframe) { iframe.remove(); iframe = null; }
-    });
-  });
-
-  // Click-to-play facades (editing section)
+  // Click-to-play facades (editing section + hero reel)
   document.querySelectorAll<HTMLElement>('[data-facade]').forEach(el => {
     el.addEventListener('click', () => {
       const src = el.dataset.videoSrc;
