@@ -159,6 +159,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   .project-card.expanded {
     grid-column: 1 / -1;
+    order: -1;
+  }
+  /* In editing section, hide thumbnail when player is showing */
+  .project-card.expanded:has(.edit-player) .project-thumb {
+    display: none;
   }
   .project-card .card-info {
     display: flex;
@@ -193,6 +198,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .headshot {
     margin-top: clamp(16px, 2vw, 24px);
     width: 100%;
+    max-width: 320px;
     border: 1px solid var(--line);
   }
 
