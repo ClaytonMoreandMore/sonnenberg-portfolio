@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gabrielsonnenberg.com/sitemap-index.xml
+Sitemap: https://gabrielsonnenberg.ca/sitemap-index.xml
