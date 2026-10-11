@@ -54,6 +54,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <div class="project-card" data-slug={p.slug}>
         <div class="project-thumb" data-expand>
           <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} />
+          <div class="play-btn"><svg viewBox="0 0 48 48"><path d="M16 10v28l22-14z"/></svg></div>
+        </div>
+        <div class="card-player" style="display:none">
+          <div class="video-wrap">
+            <iframe
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              data-play-src={ytEmbed(p.video, 'rel=0&modestbranding=1&playsinline=1&autoplay=1')}
+            ></iframe>
+          </div>
         </div>
         <div class="card-info">
           <div>
@@ -86,7 +97,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div style="padding:10px 2px 0">
           <div style="font-size:15px;font-weight:500">{e.title}</div>
         </div>
-        <div class="edit-player" style="display:none">
+        <div class="card-player" style="display:none">
           <div class="video-wrap">
             <iframe
               referrerpolicy="strict-origin-when-cross-origin"
@@ -161,8 +172,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     grid-column: 1 / -1;
     order: -1;
   }
-  /* In editing section, hide thumbnail when player is showing */
-  .project-card.expanded:has(.edit-player) .project-thumb {
+  /* Hide thumbnail when player is showing */
+  .project-card.expanded .project-thumb {
     display: none;
   }
   .project-card .card-info {
@@ -196,7 +207,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   .headshot {
-    margin-top: clamp(16px, 2vw, 24px);
+    display: block;
+    margin: clamp(16px, 2vw, 24px) auto 0;
     width: 100%;
     max-width: 320px;
     border: 1px solid var(--line);
@@ -238,7 +250,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         // Collapse all in this grid and stop any playing videos
         grid.querySelectorAll('.project-card.expanded').forEach(c => {
           c.classList.remove('expanded');
-          const player = c.querySelector('.edit-player') as HTMLElement | null;
+          const player = c.querySelector('.card-player') as HTMLElement | null;
           if (player) {
             player.style.display = 'none';
             const iframe = player.querySelector('iframe');
@@ -251,7 +263,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           card.classList.add('expanded');
 
           // If it has a player (editing section), show it and start playback
-          const player = card.querySelector('.edit-player') as HTMLElement | null;
+          const player = card.querySelector('.card-player') as HTMLElement | null;
           if (player) {
             player.style.display = 'block';
             const iframe = player.querySelector('iframe');
