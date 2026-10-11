@@ -50,25 +50,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <section id="work" class="fade-section" style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(18px,3vw,32px)">
   <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Selected works</h2>
   <div class="works-grid">
-    {PROJECTS.map((p, i) => {
-      const frame = `F${pad(1001 + Number(p.num) * 97)}`;
-      return (
-        <div class="project-card" data-slug={p.slug}>
-          <div class="project-thumb" data-expand>
-            <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} />
-            <div class="card-label" style="position:absolute;top:10px;left:12px">{p.num}</div>
-            <div class="card-label" style="position:absolute;bottom:10px;right:12px">{frame}</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 2px 0">
-            <div>
-              <a href={`/work/${p.slug}/`} style="font-size:17px;font-weight:500;color:inherit">{p.title} <span style="color:var(--accent)">&rarr;</span></a>
-              <div style="font-size:13px;color:var(--muted);margin-top:2px">{p.sub}</div>
-            </div>
-            <span style="font-family:var(--font-mono);font-size:11px;color:var(--dim);white-space:nowrap">{p.year}</span>
-          </div>
+    {PROJECTS.map((p, i) => (
+      <div class="project-card" data-slug={p.slug}>
+        <div class="project-thumb" data-expand>
+          <img src={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} />
         </div>
-      );
-    })}
+        <div class="card-info">
+          <div>
+            <a href={`/work/${p.slug}/`} style="font-size:17px;font-weight:500;color:inherit">{p.title} <span style="color:var(--accent)">&rarr;</span></a>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px">{p.sub}</div>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--dim);white-space:nowrap">{p.year}</span>
+        </div>
+      </div>
+    ))}
   </div>
 </section>
 
@@ -81,16 +76,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </div>
     <a href={YT_CHANNEL} target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">YOUTUBE CHANNEL &#8599;</a>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,20px)">
+  <div class="works-grid">
     {EDITS.map((e, i) => (
-      <div>
-        <div class="facade" data-facade data-video-src={ytEmbed(e.video, 'rel=0&modestbranding=1&playsinline=1&autoplay=1')}>
+      <div class="project-card">
+        <div class="project-thumb" data-expand>
           <img src={`https://img.youtube.com/vi/${e.video}/maxresdefault.jpg`} alt={e.title} loading="lazy" />
           <div class="play-btn"><svg viewBox="0 0 48 48"><path d="M16 10v28l22-14z"/></svg></div>
-          <div class="card-label" style="position:absolute;top:10px;left:12px;pointer-events:none">E{pad(i + 1)}</div>
         </div>
         <div style="padding:10px 2px 0">
           <div style="font-size:15px;font-weight:500">{e.title}</div>
+        </div>
+        <div class="edit-player" style="display:none">
+          <div class="video-wrap">
+            <iframe
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              data-play-src={ytEmbed(e.video, 'rel=0&modestbranding=1&playsinline=1&autoplay=1')}
+            ></iframe>
+          </div>
         </div>
       </div>
     ))}
@@ -144,18 +148,27 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <style>
   .works-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: clamp(12px, 2vw, 20px);
   }
 
   .project-card {
     display: block;
     color: inherit;
-    transition: grid-column .3s ease;
+    flex: 1 1 calc(25% - 20px);
+    min-width: 200px;
+    transition: flex-basis .3s ease;
   }
   .project-card.expanded {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
+  }
+  .project-card .card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 14px 2px 0;
   }
   .project-thumb {
     position: relative;
@@ -181,10 +194,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   .headshot {
-    margin-top: clamp(20px, 3vw, 32px);
+    margin-top: clamp(16px, 2vw, 24px);
     width: 100%;
+    max-height: 420px;
     border: 1px solid var(--line);
     object-fit: cover;
+    object-position: top;
   }
 
   .contact-row {
@@ -213,24 +228,45 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </style>
 
 <script>
-  // Expand/collapse project cards
-  document.querySelectorAll<HTMLElement>('[data-expand]').forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      const card = thumb.closest('.project-card') as HTMLElement;
-      const wasExpanded = card.classList.contains('expanded');
+  // Expand/collapse cards in each works-grid independently
+  document.querySelectorAll('.works-grid').forEach(grid => {
+    grid.querySelectorAll<HTMLElement>('[data-expand]').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const card = thumb.closest('.project-card') as HTMLElement;
+        const wasExpanded = card.classList.contains('expanded');
 
-      // Collapse all
-      document.querySelectorAll('.project-card.expanded').forEach(c => c.classList.remove('expanded'));
+        // Collapse all in this grid and stop any playing videos
+        grid.querySelectorAll('.project-card.expanded').forEach(c => {
+          c.classList.remove('expanded');
+          const player = c.querySelector('.edit-player') as HTMLElement | null;
+          if (player) {
+            player.style.display = 'none';
+            const iframe = player.querySelector('iframe');
+            if (iframe) iframe.removeAttribute('src');
+          }
+        });
 
-      // Toggle clicked card
-      if (!wasExpanded) {
-        card.classList.add('expanded');
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+        // Toggle clicked card
+        if (!wasExpanded) {
+          card.classList.add('expanded');
+
+          // If it has a player (editing section), show it and start playback
+          const player = card.querySelector('.edit-player') as HTMLElement | null;
+          if (player) {
+            player.style.display = 'block';
+            const iframe = player.querySelector('iframe');
+            if (iframe && iframe.dataset.playSrc) {
+              iframe.src = iframe.dataset.playSrc;
+            }
+          }
+
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
     });
   });
 
-  // Click-to-play facades (editing section + hero reel)
+  // Click-to-play facade (hero reel only)
   document.querySelectorAll<HTMLElement>('[data-facade]').forEach(el => {
     el.addEventListener('click', () => {
       const src = el.dataset.videoSrc;
