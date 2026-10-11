@@ -17,7 +17,7 @@ const ytEmbed = (id: string, params: string) =>
 const videoSrc = ytEmbed(p.video, 'autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1');
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<Base title={`${p.title} — Gabriel Sonnenberg`} description={p.summary}>
+<Base title={`${p.title} — Gabriel Sonnenberg`} description={p.summary} ogImage={`https://img.youtube.com/vi/${p.video}/maxresdefault.jpg`}>
 
 <div style="min-height:100vh;display:flex;flex-direction:column">
 
