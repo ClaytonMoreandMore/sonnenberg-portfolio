@@ -148,20 +148,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <style>
   .works-grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: clamp(12px, 2vw, 20px);
   }
 
   .project-card {
     display: block;
     color: inherit;
-    flex: 1 1 calc(25% - 20px);
-    min-width: 200px;
-    transition: flex-basis .3s ease;
   }
   .project-card.expanded {
-    flex: 1 1 100%;
+    grid-column: 1 / -1;
   }
   .project-card .card-info {
     display: flex;
