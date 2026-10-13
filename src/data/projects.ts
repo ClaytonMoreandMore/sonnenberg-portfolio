@@ -8,6 +8,7 @@ export interface Project {
   summary: string;
   steps: [string, string][];
   software: string[];
+  comparisons: { plate: string; final: string }[];
 }
 
 export const PROJECTS: Project[] = [
@@ -24,6 +25,7 @@ export const PROJECTS: Project[] = [
       ['Finish', 'Sound, camera shake and motion blur in Premiere.'],
     ],
     software: ['Maya', 'Nuke', 'Premiere'],
+    comparisons: [{ plate: '/shots/delorean-plate.jpg', final: '/shots/delorean-final.png' }],
   },
   {
     slug: 'ufo', num: '02', title: 'UFO',
@@ -37,6 +39,7 @@ export const PROJECTS: Project[] = [
       ['Finish', 'Sound, shake and motion blur in Premiere.'],
     ],
     software: ['Maya', 'Nuke', 'Premiere'],
+    comparisons: [{ plate: '/shots/ufo-plate.png', final: '/shots/ufo-final.png' }],
   },
   {
     slug: 'pokeball', num: '03', title: 'Pok\u00e9ball',
@@ -50,6 +53,7 @@ export const PROJECTS: Project[] = [
       ['Sound effects', 'Sound added in Premiere.'],
     ],
     software: ['Maya', 'Nuke', 'Premiere'],
+    comparisons: [{ plate: '/shots/pokeball-plate.png', final: '/shots/pokeball-final.png' }],
   },
   {
     slug: 'spider-man', num: '04', title: 'Spider-Man',
@@ -65,6 +69,10 @@ export const PROJECTS: Project[] = [
       ['Colour grading', 'Final colour grade in Premiere.'],
     ],
     software: ['Maya', 'Premiere Pro', 'Nuke', 'Photoshop'],
+    comparisons: [
+      { plate: '/shots/spider-man-plate-1.png', final: '/shots/spider-man-final-1.jpg' },
+      { plate: '/shots/spider-man-plate-2.png', final: '/shots/spider-man-final-2.png' },
+    ],
   },
 ];
 

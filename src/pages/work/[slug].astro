@@ -53,25 +53,27 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <section style="padding:clamp(24px,4vw,56px) var(--px);border-top:1px solid var(--line);display:grid;gap:clamp(14px,2vw,20px)">
   <div class="section-head">
     <h2 style="font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-.01em">Plate vs. final</h2>
-    <span class="mono">DRAG TO COMPARE &middot; <span id="split-label">050%</span></span>
+    <span class="mono">DRAG TO COMPARE</span>
   </div>
-  <div id="compare" style="position:relative;aspect-ratio:16/9;border:1px solid var(--line);overflow:hidden;background:var(--surface);user-select:none">
-    <!-- Final (underneath) -->
-    <div style="position:absolute;inset:0;display:grid;place-items:center;background:var(--surface-3);color:var(--faint);font-family:var(--font-mono);font-size:12px;letter-spacing:.08em">FINAL COMP STILL</div>
-    <!-- Plate (clipped) -->
-    <div id="plate-clip" style="position:absolute;inset:0;clip-path:inset(0 50% 0 0)">
-      <div style="position:absolute;inset:0;display:grid;place-items:center;background:var(--surface-2);color:var(--faint);font-family:var(--font-mono);font-size:12px;letter-spacing:.08em">RAW PLATE</div>
+  {p.comparisons.map((cmp, i) => (
+    <div class="compare-slider" style="position:relative;aspect-ratio:16/9;border:1px solid var(--line);overflow:hidden;background:var(--surface);user-select:none">
+      <!-- Final (underneath) -->
+      <img src={cmp.final} alt={`${p.title} final shot${p.comparisons.length > 1 ? ` ${i + 1}` : ''}`} style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+      <!-- Plate (clipped) -->
+      <div class="plate-clip" style="position:absolute;inset:0;clip-path:inset(0 50% 0 0)">
+        <img src={cmp.plate} alt={`${p.title} base plate${p.comparisons.length > 1 ? ` ${i + 1}` : ''}`} style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+      </div>
+      <!-- Handle -->
+      <div class="compare-handle" style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--text);z-index:1">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border:1px solid var(--text);background:var(--bg);display:grid;place-items:center;font-size:11px;color:var(--text);font-family:var(--font-mono)">&#9666;&#9656;</div>
+      </div>
+      <!-- Corner tags -->
+      <span style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--text);background:rgba(11,11,12,.7);padding:3px 6px;z-index:1">PLATE</span>
+      <span style="position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:11px;color:var(--text);background:rgba(11,11,12,.7);padding:3px 6px;z-index:1">FINAL</span>
+      <!-- Range input -->
+      <input type="range" class="split-range" min="0" max="100" value="50" aria-label={`Compare plate and final${p.comparisons.length > 1 ? ` ${i + 1}` : ''}`} style="position:absolute;inset:0;width:100%;height:100%;opacity:0.0001;z-index:2" />
     </div>
-    <!-- Handle -->
-    <div id="compare-handle" style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--text);z-index:1">
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border:1px solid var(--text);background:var(--bg);display:grid;place-items:center;font-size:11px;color:var(--text);font-family:var(--font-mono)">&#9666;&#9656;</div>
-    </div>
-    <!-- Corner tags -->
-    <span style="position:absolute;top:10px;left:12px;font-family:var(--font-mono);font-size:11px;color:var(--text);background:rgba(11,11,12,.7);padding:3px 6px;z-index:1">PLATE</span>
-    <span style="position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:11px;color:var(--text);background:rgba(11,11,12,.7);padding:3px 6px;z-index:1">FINAL</span>
-    <!-- Range input -->
-    <input type="range" id="split-range" min="0" max="100" value="50" aria-label="Compare plate and final" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.0001;z-index:2" />
-  </div>
+  ))}
 </section>
 
 <!-- Breakdown -->
@@ -121,17 +123,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </Base>
 
 <script>
-  const range = document.getElementById('split-range') as HTMLInputElement;
-  const plate = document.getElementById('plate-clip') as HTMLElement;
-  const handle = document.getElementById('compare-handle') as HTMLElement;
-  const label = document.getElementById('split-label') as HTMLElement;
+  document.querySelectorAll('.compare-slider').forEach(slider => {
+    const range = slider.querySelector('.split-range') as HTMLInputElement;
+    const plate = slider.querySelector('.plate-clip') as HTMLElement;
+    const handle = slider.querySelector('.compare-handle') as HTMLElement;
 
-  function update() {
-    const v = Number(range.value);
-    plate.style.clipPath = `inset(0 ${100 - v}% 0 0)`;
-    handle.style.left = `${v}%`;
-    label.textContent = `${String(v).padStart(3, '0')}%`;
-  }
-
-  range.addEventListener('input', update);
+    range.addEventListener('input', () => {
+      const v = Number(range.value);
+      plate.style.clipPath = `inset(0 ${100 - v}% 0 0)`;
+      handle.style.left = `${v}%`;
+    });
+  });
 </script>
