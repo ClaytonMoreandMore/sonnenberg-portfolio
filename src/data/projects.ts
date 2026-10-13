@@ -53,7 +53,10 @@ export const PROJECTS: Project[] = [
       ['Sound effects', 'Sound added in Premiere.'],
     ],
     software: ['Maya', 'Nuke', 'Premiere'],
-    comparisons: [{ plate: '/shots/pokeball-plate.png', final: '/shots/pokeball-final.png' }],
+    comparisons: [
+      { plate: '/shots/pokeball-plate.png', final: '/shots/pokeball-final.png' },
+      { plate: '/shots/pokeball-plate-2.png', final: '/shots/pokeball-final-2.png' },
+    ],
   },
   {
     slug: 'spider-man', num: '04', title: 'Spider-Man',
@@ -70,7 +73,7 @@ export const PROJECTS: Project[] = [
     ],
     software: ['Maya', 'Premiere Pro', 'Nuke', 'Photoshop'],
     comparisons: [
-      { plate: '/shots/spider-man-plate-1.png', final: '/shots/spider-man-final-1.jpg' },
+      { plate: '/shots/spider-man-plate-1.png', final: '/shots/spider-man-final-1.png' },
       { plate: '/shots/spider-man-plate-2.png', final: '/shots/spider-man-final-2.png' },
     ],
   },
